@@ -1,5 +1,7 @@
 const express = require("express")
+const cors = require("cors")
 const webserver = express()
+webserver.use(cors())
 webserver.use(express.json());
 
 const createSiteState = require("./createSiteState");
