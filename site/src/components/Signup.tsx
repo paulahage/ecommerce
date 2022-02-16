@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Home from "./Home";
 import * as yup from "yup";
 
 const Signup = () => {
@@ -61,53 +62,61 @@ const Signup = () => {
     .min(6, "Minimum of 6 characters");
 
   // Validating the inputs
-  const nameValidate = async () => {
+  const nameValidate = async (): Promise<boolean> => {
     try {
       await nameValidation.validate(name);
       setErrorName("");
-    } catch (error) {
+      return true;
+    } catch (error: any) {
       setErrorName(error.errors[0]);
+      return false;
     }
   };
 
-  const emailValidate = async () => {
+  const emailValidate = async (): Promise<boolean> => {
     try {
       await emailValidation.validate(email);
       setErrorEmail("");
-    } catch (error) {
+      return true;
+    } catch (error: any) {
       setErrorEmail(error.errors[0]);
+      return false;
     }
   };
 
-  const passwordValidate = async () => {
+  const passwordValidate = async (): Promise<boolean> => {
     try {
       await passwordValidation.validate(password);
       setErrorPassword("");
-    } catch (error) {
+      return true;
+    } catch (error: any) {
       setErrorPassword(error.errors[0]);
+      return false;
     }
   };
 
   //Send to API the data of the user after sign up
   const handleSubmit = async () => {
-    nameValidate();
-    emailValidate();
-    passwordValidate();
+    const isNameValid = await nameValidate();
+    const isEmailValid = await emailValidate();
+    const isPasswordValid = await passwordValidate();
 
-    const response = await fetch("http://localhost:3001/users", {
-      method: "POST",
-      headers: {
-        body: { name, email, password },
-      },
-    });
+    if (isNameValid && isEmailValid && isPasswordValid) {
+      const response = await fetch("http://localhost:3001/users", {
+        method: "POST",
+        headers: {
+          body: JSON.stringify({ name, email, password }),
+        },
+      });
+      setFirstRender(true);
+      setName("");
+      setFirstRender(true);
+      setEmail("");
+      setFirstRender(true);
+      setPassword("");
+    }
+
     //const responseCode = response.status;
-    setFirstRender(true);
-    setName("");
-    setFirstRender(true);
-    setEmail("");
-    setFirstRender(true);
-    setPassword("");
-
   };
 
   return (

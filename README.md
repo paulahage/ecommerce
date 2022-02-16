@@ -11,4 +11,4 @@
     - Go to the `/site`
       - `$ cd site`
     - Initialize the front-end app:
-      - TBD
+      - `$ npm start`
