@@ -12,8 +12,8 @@ module.exports = () => {
       name: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
       price: faker.commerce.price(),
-      department: faker.commerce.department(),
-      image: faker.image.fashion(),
+      departmentId: faker.commerce.department().toLowerCase(),
+      image: `${faker.image.nature()}?random=${Math.round(Math.random() * 1000)}`,
     };
   };
 
