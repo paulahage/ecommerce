@@ -7,12 +7,29 @@ module.exports = (webserver, siteState) => {
   });
 
   // create new user
-  webserver.post("/users", (request, response) => {
+  webserver.post("/user/create", (request, response) => {
     const user = request.body;
+
+    if (!user.name) {
+      response.status(401);
+      return response.send(`invalid name`);
+    }
+
+    if (!user.email) {
+      response.status(401);
+      return response.send(`invalid email`);
+    }
+
+    if (!user.email) {
+      response.status(401);
+      return response.send(`invalid password`);
+    }
+
+    user.id = faker.datatype.uuid();
     user.image = faker.image.avatar();
     siteState.users.push(user);
 
-    response.send(200);
+    response.send(user);
   });
 
   // login user
